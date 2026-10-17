@@ -514,19 +514,45 @@ td button:hover { color: #fff; background: var(--logo-blue); border-color: var(-
 tbody tr:hover td { background: #f7faff; }
 tbody tr:last-child td { border-bottom: 0; }
 
+/* Filter bars: the fields share the row equally and the buttons sit at its end
+   on the SAME line, level with the inputs. If the screen is too narrow, the
+   buttons wrap onto a line of their own, kept to the right. */
 .filters {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
     gap: 14px 16px;
-    align-items: end;
     margin-bottom: 20px;
     padding: 16px;
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: var(--r-md);
 }
-.filter-field { position: relative; min-width: 0; }
-.filter-actions { display: flex; gap: 8px; }
+.filter-field { position: relative; flex: 1 1 130px; min-width: 0; }
+/* every control the same height (date inputs used to be 2px taller, which
+   pushed their labels 2px out of line) */
+.filters input, .filters select { height: 46px; }
+/* the buttons: one row, all the same width and height, never wrapping text */
+.filter-actions {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 8px;
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+.filter-actions button { height: 46px; padding: 0 12px; white-space: nowrap; }
+
+/* On a phone three buttons side by side are wider than the bar, so they stack,
+   each the full width of the bar */
+@media (max-width: 600px) {
+    .filter-actions {
+        flex: 1 1 100%;
+        margin-left: 0;
+        grid-auto-flow: row;
+        grid-auto-columns: auto;
+    }
+}
 #attendanceContainer, #studentAttendanceContainer { min-height: 360px; }
 
 
@@ -1062,15 +1088,6 @@ td button, td button + button { margin: 2px 3px; }
 td select { width: 100%; min-width: 0; max-width: 210px; }
 /* tables inside dialogs size their columns to the content instead */
 .roster-scroll table { table-layout: auto; }
-
-/* ---------- Filter bars: the buttons get their own full-width row ---------- */
-.filter-actions {
-    grid-column: 1 / -1;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 10px;
-}
-.filter-actions button { white-space: nowrap; }
 
 /* ---------- Attendance summary: say that names are clickable ---------- */
 .summary-hint {
