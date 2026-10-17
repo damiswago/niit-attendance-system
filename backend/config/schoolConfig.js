@@ -1,0 +1,1 @@
+export const SCHOOL_END_TIME = "18:00";

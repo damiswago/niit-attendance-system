@@ -1,0 +1,3 @@
+export const MIN_ATTENDANCE_PERCENTAGE = 50;
+
+export const LATE_THRESHOLD_MINUTES = 10;
