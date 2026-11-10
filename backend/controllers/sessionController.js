@@ -549,6 +549,15 @@ export const postponeSession = async (req, res) => {
       dbSession.endSession();
     }
 
+    // The unique index on (timetable, day) refused a second copy of the same
+    // session: it was created a moment ago by someone or something else
+    if (error.code === 11000) {
+      return res.status(409).json({
+        message:
+          "This session was just created or changed by someone else. Please refresh and try again.",
+      });
+    }
+
     return res.status(500).json({
       message: "Failed to postpone session",
       error: error.message,
@@ -928,6 +937,15 @@ export const cancelSession = async (req, res) => {
 
     if (dbSession) {
       dbSession.endSession();
+    }
+
+    // The unique index on (timetable, day) refused a second copy of the same
+    // session: it was created a moment ago by someone or something else
+    if (error.code === 11000) {
+      return res.status(409).json({
+        message:
+          "This session was just created or changed by someone else. Please refresh and try again.",
+      });
     }
 
     return res.status(500).json({

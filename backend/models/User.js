@@ -30,6 +30,13 @@ const userSchema = new mongoose.Schema({
         default: null
     },
 
+    // When the password last changed or was reset. A login from before this
+    // moment is rejected, so changing a password signs the account out everywhere.
+    passwordChangedAt: {
+        type: Date,
+        default: null
+    },
+
     role: {
         type: String,
         enum: ["student", "instructor", "admin"],
@@ -53,4 +60,4 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", userSchema);
-export default User;    
+export default User;

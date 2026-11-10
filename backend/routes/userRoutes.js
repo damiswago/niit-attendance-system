@@ -6,6 +6,7 @@ import {
   createUser,
   getUsers,
   updateUser,
+  setUserPassword,
 } from "../controllers/userController.js";
 
 const router = express.Router();
@@ -20,5 +21,12 @@ router.get(
   getMyStudents,
 );
 router.patch("/:id", authenticateUser, authorizeRoles("admin"), updateUser);
+// Admin sets a new password for another user (signs them out everywhere)
+router.patch(
+  "/:id/password",
+  authenticateUser,
+  authorizeRoles("admin"),
+  setUserPassword,
+);
 
 export default router;

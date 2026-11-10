@@ -2,7 +2,17 @@
 // Load this BEFORE every other page script.
 (() => {
   // The ONLY place the API address lives. It must match your backend PORT.
-  const API_BASE = "http://127.0.0.1:3000/api";
+  // Where the API lives. When this page is served by the same server as the API
+  // (the normal deployment) that is simply "/api". The one exception is local
+  // development with VS Code's Live Server (port 5500), where the API runs
+  // separately on port 3000.
+  const API_BASE = (() => {
+    const { hostname, port, protocol } = window.location;
+    const liveServer =
+      port === "5500" && (hostname === "127.0.0.1" || hostname === "localhost");
+
+    return liveServer ? `${protocol}//${hostname}:3000/api` : "/api";
+  })();
 
   // fetch wrapper. Always resolves to { ok, status, data } and never throws.
   const api = async (path, { method = "GET", body } = {}) => {
@@ -33,87 +43,6 @@
     }
   };
 
-  // ---------- Toast sound ----------
-  // A short chime made in the browser (nothing to download). Browsers only
-  // allow sound once the person has clicked or typed on the page, so a toast
-  // that appears before any interaction is silent: that is normal.
-  const SOUND_KEY = "toastSound";
-  let audioContext = null;
-
-  const soundIsOn = () => {
-    try {
-      return localStorage.getItem(SOUND_KEY) !== "off";
-    } catch {
-      return true;
-    }
-  };
-
-  const setSound = (on) => {
-    try {
-      localStorage.setItem(SOUND_KEY, on ? "on" : "off");
-    } catch {
-      // storage unavailable: the choice just won't be remembered
-    }
-  };
-
-  // Two quick notes: rising for good news, falling for a problem
-  const CHIMES = {
-    success: [
-      [660, 0],
-      [880, 0.12],
-    ],
-    error: [
-      [440, 0],
-      [330, 0.14],
-    ],
-  };
-
-  const playChime = (type = "success") => {
-    if (!soundIsOn()) {
-      return;
-    }
-
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-
-      if (!AudioCtx) {
-        return;
-      }
-
-      audioContext = audioContext || new AudioCtx();
-
-      if (audioContext.state === "suspended") {
-        const resumed = audioContext.resume();
-
-        if (resumed && resumed.catch) {
-          resumed.catch(() => {});
-        }
-      }
-
-      const start = audioContext.currentTime;
-
-      (CHIMES[type] || CHIMES.success).forEach(([frequency, offset]) => {
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-
-        oscillator.type = "sine";
-        oscillator.frequency.value = frequency;
-
-        // Fade in and out quickly so the notes don't click
-        gain.gain.setValueAtTime(0.0001, start + offset);
-        gain.gain.exponentialRampToValueAtTime(0.18, start + offset + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, start + offset + 0.28);
-
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
-        oscillator.start(start + offset);
-        oscillator.stop(start + offset + 0.3);
-      });
-    } catch {
-      // Sound is a nicety: it must never stop a toast from showing
-    }
-  };
-
   // Toast notification (one timer, so a new toast never gets cut short by an old one)
   let toastTimer;
 
@@ -138,8 +67,6 @@
     toast.textContent = message;
     toast.classList.remove("success", "error");
     toast.classList.add(type, "show");
-
-    playChime(type);
 
     toastTimer = setTimeout(() => toast.classList.remove("show"), 3500);
   };
@@ -629,35 +556,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     addPasswordToggles();
 
-    // The speaker button in the top bar switches toast sounds on and off
-    const soundToggle = document.getElementById("soundToggle");
-
-    if (soundToggle) {
-      const paintSound = () => {
-        const on = soundIsOn();
-
-        soundToggle.setAttribute("aria-pressed", String(on));
-        soundToggle.setAttribute(
-          "aria-label",
-          on ? "Notification sounds are on" : "Notification sounds are off",
-        );
-        soundToggle.title = on
-          ? "Notification sounds: on (click to mute)"
-          : "Notification sounds: off (click to turn on)";
-        soundToggle.classList.toggle("is-muted", !on);
-      };
-
-      soundToggle.addEventListener("click", () => {
-        setSound(!soundIsOn());
-        paintSound();
-
-        if (soundIsOn()) {
-          playChime("success"); // lets them hear what they just turned on
-        }
-      });
-
-      paintSound();
-    }
   });
 
   // Screen readers announce which column a cell belongs to when headers are
@@ -672,8 +570,6 @@
     API_BASE,
     api,
     showToast,
-    playChime,
-    soundIsOn,
     withBusy,
     el,
     createAutocomplete,

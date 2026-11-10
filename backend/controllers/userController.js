@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import Class from "../models/Class.js";
+import { containsIgnoringCase } from "../utils/search.js";
+import {
+  isAcceptablePassword,
+  hashPassword,
+  passwordChangeStamp,
+  PASSWORD_RULE_MESSAGE,
+} from "../utils/passwords.js";
 
 const ROLES = ["student", "instructor", "admin"];
 const STATUSES = ["active", "inactive"];
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MIN_PASSWORD_LENGTH = 8;
 
 // What the API returns for a user: never the password or reset token
 const PUBLIC_FIELDS = "-password -resetPasswordToken -resetPasswordExpires";
@@ -55,10 +60,8 @@ export const createUser = async (req, res) => {
       return res.status(400).json({ message: "Enter a valid email address" });
     }
 
-    if (typeof password !== "string" || password.length < MIN_PASSWORD_LENGTH) {
-      return res.status(400).json({
-        message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
-      });
+    if (!isAcceptablePassword(password)) {
+      return res.status(400).json({ message: PASSWORD_RULE_MESSAGE });
     }
 
     // Students must belong to a class; other roles never have one
@@ -90,7 +93,7 @@ export const createUser = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password);
 
     const user = await User.create({
       name,
@@ -121,16 +124,120 @@ export const createUser = async (req, res) => {
   }
 };
 
+const DEFAULT_USERS_PAGE_SIZE = 20;
+const MAX_USERS_PAGE_SIZE = 100;
+
+// GET /users
+//   no paging asked for  -> everyone, as before (other screens need the full list)
+//   ?page=1&limit=20     -> one page plus pagination info
+// Both accept filters: ?search=&role=&status=&class=<id>|none
+// "search" matches name or email anywhere in the text, ignoring case.
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find()
+    const { search, role, status, page, limit } = req.query;
+    const classFilter = req.query.class;
+
+    // Plain strings only; anything else (arrays, objects) is rejected
+    for (const value of [search, role, status, classFilter, page, limit]) {
+      if (value !== undefined && typeof value !== "string") {
+        return res.status(400).json({ message: "Invalid filter" });
+      }
+    }
+
+    if (role && !ROLES.includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
+
+    if (status && !STATUSES.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    if (
+      classFilter &&
+      classFilter !== "none" &&
+      !mongoose.isValidObjectId(classFilter)
+    ) {
+      return res.status(400).json({ message: "Invalid class" });
+    }
+
+    if (search && search.length > 100) {
+      return res.status(400).json({ message: "Search text is too long" });
+    }
+
+    const filter = {};
+
+    if (role) {
+      filter.role = role;
+    }
+
+    if (status) {
+      filter.status = status;
+    }
+
+    if (classFilter === "none") {
+      // "No class" means students who haven't been given one
+      filter.class = null;
+
+      if (role && role !== "student") {
+        filter._id = null; // nobody can match
+      } else {
+        filter.role = "student";
+      }
+    } else if (classFilter) {
+      filter.class = classFilter;
+    }
+
+    if (search && search.trim()) {
+      const matcher = containsIgnoringCase(search);
+
+      filter.$or = [{ name: matcher }, { email: matcher }];
+    }
+
+    const query = User.find(filter)
       .select(PUBLIC_FIELDS)
       .populate({ path: "class", select: "name" })
-      .sort({ name: 1 });
+      .sort({ name: 1, _id: 1 });
 
-    res.status(200).json({
+    if (page === undefined) {
+      const users = await query;
+
+      return res.status(200).json({
+        message: "Users retrieved successfully",
+        users,
+      });
+    }
+
+    const pageNumber = Number(page);
+    const pageSize =
+      limit === undefined ? DEFAULT_USERS_PAGE_SIZE : Number(limit);
+
+    if (
+      !Number.isInteger(pageNumber) ||
+      pageNumber < 1 ||
+      !Number.isInteger(pageSize) ||
+      pageSize < 1
+    ) {
+      return res.status(400).json({
+        message: "page and limit must be positive whole numbers",
+      });
+    }
+
+    const size = Math.min(pageSize, MAX_USERS_PAGE_SIZE);
+
+    const [total, users] = await Promise.all([
+      User.countDocuments(filter),
+      query.skip((pageNumber - 1) * size).limit(size),
+    ]);
+
+    return res.status(200).json({
       message: "Users retrieved successfully",
       users,
+      pagination: {
+        page: pageNumber,
+        limit: size,
+        total,
+        totalPages: Math.max(1, Math.ceil(total / size)),
+      },
     });
   } catch (error) {
     return res.status(500).json({
@@ -140,7 +247,9 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// Admin: change a user's name, status or class. Send only the fields to change.
+// Admin: change a user's name, email, status or class. Send only the fields to
+// change. A user's ROLE can't be changed here (or anywhere): create a new account
+// instead.
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -155,11 +264,45 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const { name, status } = req.body;
+    if (Object.prototype.hasOwnProperty.call(req.body, "role")) {
+      return res.status(400).json({
+        message: "A user's role can't be changed",
+      });
+    }
+
+    const { name, status, email } = req.body;
     const hasClass = Object.prototype.hasOwnProperty.call(req.body, "class");
 
-    if (name === undefined && status === undefined && !hasClass) {
+    if (
+      name === undefined &&
+      status === undefined &&
+      email === undefined &&
+      !hasClass
+    ) {
       return res.status(400).json({ message: "Nothing to update" });
+    }
+
+    if (email !== undefined) {
+      const newEmail = isBlank(email) ? "" : email.trim().toLowerCase();
+
+      if (!EMAIL_PATTERN.test(newEmail)) {
+        return res.status(400).json({ message: "Enter a valid email address" });
+      }
+
+      if (newEmail !== user.email) {
+        const taken = await User.findOne({
+          email: newEmail,
+          _id: { $ne: user._id },
+        }).select("_id");
+
+        if (taken) {
+          return res.status(409).json({
+            message: "A user with this email already exists",
+          });
+        }
+
+        user.email = newEmail;
+      }
     }
 
     if (name !== undefined) {
@@ -217,8 +360,67 @@ export const updateUser = async (req, res) => {
       user: safeUser,
     });
   } catch (error) {
+    // Someone else took this email a moment ago (the unique index refused it)
+    if (error.code === 11000) {
+      return res.status(409).json({
+        message: "A user with this email already exists",
+      });
+    }
+
     return res.status(500).json({
       message: "Failed to update user",
+      error: error.message,
+    });
+  }
+};
+
+// Admin: set a new password for someone else (e.g. they are locked out and
+// email isn't working). Their existing logins stop working, so they are signed
+// out everywhere and must log in again with the new password. The password is
+// never sent back or stored anywhere readable.
+export const setUserPassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { newPassword } = req.body;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    if (String(id) === req.user.userId) {
+      return res.status(400).json({
+        message: "To change your own password, use Change password",
+      });
+    }
+
+    if (!isAcceptablePassword(newPassword)) {
+      return res.status(400).json({ message: PASSWORD_RULE_MESSAGE });
+    }
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.password = await hashPassword(newPassword);
+    user.passwordChangedAt = passwordChangeStamp();
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+
+    await user.save({ validateModifiedOnly: true });
+
+    console.log(
+      `Password for ${user.email} was set by administrator ${req.user.userId}`,
+    );
+
+    return res.status(200).json({
+      message:
+        "Password updated. They have been signed out everywhere and must log in with the new password.",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to set the password",
       error: error.message,
     });
   }

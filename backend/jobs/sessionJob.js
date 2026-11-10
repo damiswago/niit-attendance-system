@@ -64,15 +64,29 @@ const sessionJob = () => {
           continue;
         }
 
-        const session = await Session.create({
-          instructor: timetable.instructor,
-          course: timetable.course,
-          date: sessionDate,
-          startTime: timetable.startTime,
-          endTime: timetable.endTime,
-          status: "active",
-          timetable: timetable._id,
-        });
+        let session;
+
+        try {
+          session = await Session.create({
+            instructor: timetable.instructor,
+            course: timetable.course,
+            date: sessionDate,
+            startTime: timetable.startTime,
+            endTime: timetable.endTime,
+            status: "active",
+            timetable: timetable._id,
+          });
+        } catch (error) {
+          // Another copy of this job (or an admin's postponement) created the
+          // same session a moment earlier: the unique index refused ours, and
+          // that is exactly what it is for
+          if (error.code === 11000) {
+            console.log(`Session already created: ${timetable.course}`);
+            continue;
+          }
+
+          throw error;
+        }
 
         console.log(
           `Session created: ${session.course} (${session.startTime} - ${session.endTime})`,

@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <dialog id="sessionDialog" aria-labelledby="sessionDialogTitle">
+        <form id="sessionDialogForm" novalidate>
+            <h3 id="sessionDialogTitle"></h3>
+            <p id="sessionDialogSummary" class="dialog-summary"></p>
+
+            <div class="form-group" id="sessionReasonGroup">
+                <label for="sessionReason">Reason (optional)</label>
+                <input type="text" id="sessionReason" maxlength="200" autocomplete="off">
+            </div>
+
+            <label class="check-row" id="scheduleReplacementRow">
+                <input type="checkbox" id="scheduleReplacement" checked>
+                <span>Schedule a replacement session now</span>
+            </label>
+
+            <div id="replacementFields">
+                <div class="form-group">
+                    <label for="replacementDate">Replacement date</label>
+                    <input type="date" id="replacementDate">
+                </div>
+
+                <div class="field-pair">
+                    <div class="form-group">
+                        <label for="replacementStart">Start</label>
+                        <input type="time" id="replacementStart">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="replacementEnd">End</label>
+                        <input type="time" id="replacementEnd">
+                    </div>
+                </div>
+            </div>
+
+            <p id="sessionDialogError" class="error" role="alert"></p>
+
+            <div class="dialog-actions">
+                <button type="button" id="sessionDialogCancel" class="btn-outline">Close</button>
+                <button type="submit" id="sessionDialogConfirm">Confirm</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="rosterDialog" aria-labelledby="rosterTitle">
+        <h3 id="rosterTitle"></h3>
+        <p id="rosterSummary" class="dialog-summary"></p>
+        <p id="rosterCounts" class="roster-counts" aria-live="polite"></p>
+
+        <p id="rosterError" class="error" role="alert"></p>
+
+        <div class="roster-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Status</th>
+                        <th>Signed in</th>
+                        <th>Signed out</th>
+                        <th>Counted</th>
+                    </tr>
+                </thead>
+
+                <tbody id="rosterBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dialog-actions">
+            <button type="button" id="rosterRefresh" class="btn-outline">Refresh</button>
+            <button type="button" id="rosterClose">Close</button>
+        </div>
+    </dialog>
+
+    <dialog id="passwordDialog" aria-labelledby="passwordDialogTitle">
+        <form id="passwordForm" novalidate>
+            <h3 id="passwordDialogTitle">Change password</h3>
+
+            <div class="form-group">
+                <label for="currentPassword">Current password</label>
+                <input type="password" id="currentPassword" autocomplete="current-password">
+            </div>
+
+            <div class="form-group">
+                <label for="newPassword">New password</label>
+                <input type="password" id="newPassword" autocomplete="new-password">
+                <small class="field-hint">8 to 72 characters.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm new password</label>
+                <input type="password" id="confirmPassword" autocomplete="new-password">
+            </div>
+
+            <p id="passwordError" class="error" role="alert"></p>
+
+            <div class="dialog-actions">
+                <button type="button" id="passwordCancel" class="btn-outline">Cancel</button>
+                <button type="submit" id="passwordSubmit">Change password</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="studentDetailDialog" aria-labelledby="studentDetailTitle">
+        <h3 id="studentDetailTitle"></h3>
+        <p id="studentDetailSummary" class="dialog-summary"></p>
+        <p id="studentDetailCounts" class="roster-counts" aria-live="polite"></p>
+
+        <div class="dialog-filter">
+            <label for="studentDetailFilter">Show</label>
+            <select id="studentDetailFilter">
+                <option value="all">All sessions</option>
+                <option value="issues">Missed or not counted</option>
+                <option value="attended">Attended</option>
+            </select>
+        </div>
+
+        <div class="roster-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Course</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentDetailBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dialog-actions">
+            <button type="button" id="studentDetailClose">Close</button>
+        </div>
+    </dialog>
+
+    <dialog id="userEditDialog" class="form-dialog" aria-labelledby="userEditTitle">
+        <form id="userEditForm" novalidate>
+            <h3 id="userEditTitle">Edit user</h3>
+
+            <div class="form-group">
+                <label for="userEditName">Name</label>
+                <input type="text" id="userEditName" maxlength="100" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="userEditEmail">Email</label>
+                <input type="email" id="userEditEmail" autocomplete="off">
+            </div>
+
+            <p id="userEditRole" class="dialog-summary"></p>
+
+            <p id="userEditError" class="error" role="alert"></p>
+
+            <div class="dialog-actions">
+                <button type="button" id="userEditCancel" class="btn-outline">Cancel</button>
+                <button type="submit" id="userEditSave">Save</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="userPasswordDialog" class="form-dialog" aria-labelledby="userPasswordTitle">
+        <form id="userPasswordForm" novalidate>
+            <h3 id="userPasswordTitle">Set password</h3>
+            <p id="userPasswordWho" class="dialog-summary"></p>
+
+            <div class="form-group">
+                <label for="userNewPassword">New password</label>
+                <input type="password" id="userNewPassword" autocomplete="new-password">
+                <small class="field-hint">8 to 72 characters. They will be signed out everywhere and must log in with
+                    this password.</small>
+            </div>
+
+            <button type="button" id="userGeneratePassword" class="btn-outline">Generate a strong password</button>
+
+            <p id="userPasswordError" class="error" role="alert"></p>
+
+            <div class="dialog-actions">
+                <button type="button" id="userPasswordCancel" class="btn-outline">Cancel</button>
+                <button type="submit" id="userPasswordSave">Set password</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="classEditDialog" class="form-dialog" aria-labelledby="classEditTitle">
+        <form id="classEditForm" novalidate>
+            <h3 id="classEditTitle">Rename class</h3>
+
+            <div class="form-group">
+                <label for="classEditName">Class name</label>
+                <input type="text" id="classEditName" maxlength="80" autocomplete="off">
+            </div>
+
+            <p id="classEditError" class="error" role="alert"></p>
+
+            <div class="dialog-actions">
+                <button type="button" id="classEditCancel" class="btn-outline">Cancel</button>
+                <button type="submit" id="classEditSave">Save</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="dashboard">
+        <header class="topbar">
+            <img class="topbar-logo" src="./img/niit-logo-white.png" alt="NIIT">
+
+            <div class="topbar-user">
+                <span id="welcomeMessage"></span>
+                <span id="roleBadge" class="badge badge-role"></span>
+                <div class="notifications">
+                    <button type="button" id="notificationsButton" class="icon-button" aria-label="Notifications"
+                        aria-expanded="false" aria-controls="notificationsPanel">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                        </svg>
+                        <span id="notificationsCount" class="notification-count" aria-hidden="true" hidden></span>
+                    </button>
+
+                    <div id="notificationsPanel" class="notifications-panel" role="region"
+                        aria-labelledby="notificationsTitle" hidden>
+                        <div class="notifications-head">
+                            <strong id="notificationsTitle">Notifications</strong>
+                            <button type="button" id="notificationsMarkAll" class="link-button" disabled>Mark all
+                                read</button>
+                        </div>
+
+                        <p id="notificationsStatus" class="notifications-status" role="status"></p>
+
+                        <ul id="notificationsList" class="notifications-list"></ul>
+
+                        <button type="button" id="notificationsMore" class="btn-outline" hidden>Load more</button>
+                    </div>
+                </div>
+                <button id="changePasswordButton">Change password</button>
+                <button id="logoutButton">Log out</button>
+            </div>
+        </header>
+
+        <main class="content" id="main" tabindex="-1">
+            <section id="roleNotice" class="notice" hidden></section>
+
+            <div id="adminDashboard">
+                <h2>Admin Dashboard</h2>
+                <p class="page-subtitle">Manage users, timetables and attendance records.</p>
+
+                <div class="admin-actions" role="group" aria-label="Admin sections">
+                    <button id="manageUsersButton">Manage Users</button>
+
+                    <button id="createUserButton">Create User</button>
+
+                    <button id="manageClassesButton">Manage Classes</button>
+
+                    <button id="manageTimetableButton">Manage Timetables</button>
+
+                    <button id="manageSessionsButton">Manage Sessions</button>
+
+                    <button id="attendanceSummaryButton">Attendance Summary</button>
+
+                    <button id="attendanceReportsButton">Attendance Reports</button>
+                </div>
+
+                <div id="usersContainer">
+                    <h3>Users</h3>
+
+                    <div id="usersFilters" class="filters">
+                        <div class="filter-field">
+                            <label for="userSearch">Search</label>
+                            <input type="search" id="userSearch" placeholder="Name or email" autocomplete="off"
+                                maxlength="100">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="userRoleFilter">Role</label>
+                            <select id="userRoleFilter">
+                                <option value="">All roles</option>
+                                <option value="student">Student</option>
+                                <option value="instructor">Instructor</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="userStatusFilter">Status</label>
+                            <select id="userStatusFilter">
+                                <option value="">Any status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="userClassFilter">Class</label>
+                            <select id="userClassFilter">
+                                <option value="">All classes</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button type="button" id="userFiltersClear" class="btn-outline">Clear</button>
+                        </div>
+                    </div>
+
+                    <p id="usersCount" class="report-count" aria-live="polite"></p>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Class</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="usersTableBody">
+                        </tbody>
+
+                    </table>
+
+                    <div id="usersPager" class="pager" hidden>
+                        <button type="button" id="usersPrev" class="btn-outline">Previous</button>
+                        <span id="usersPageInfo" aria-live="polite"></span>
+                        <button type="button" id="usersNext" class="btn-outline">Next</button>
+                    </div>
+
+                </div>
+
+                <div id="createUserContainer">
+                    <h3>Create User</h3>
+
+                    <form id="createUserForm">
+
+                        <div class="form-group">
+                            <label for="userName">Name</label>
+                            <input type="text" id="userName" autocomplete="off" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userEmail">Email</label>
+                            <input type="email" id="userEmail" autocomplete="off" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userPassword">Password</label>
+                            <input type="password" id="userPassword" autocomplete="new-password" minlength="8" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userRole">Role</label>
+                            <select id="userRole" required>
+                                <option value="">Select role</option>
+                                <option value="student">Student</option>
+                                <option value="instructor">Instructor</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="userClassGroup" hidden>
+                            <label for="userClass">Class</label>
+                            <select id="userClass">
+                                <option value="">Select class</option>
+                            </select>
+                        </div>
+
+                        <button type="submit">Create User</button>
+
+                        <p id="createUserMessage"></p>
+
+                    </form>
+                </div>
+
+                <div id="classesContainer">
+                    <div class="panel-head">
+                        <h3>Classes</h3>
+                    </div>
+
+                    <form id="createClassForm" class="inline-form">
+                        <div class="form-group">
+                            <label for="className">New class name</label>
+                            <input type="text" id="className" placeholder="e.g. Cohort 12 - Full Stack"
+                                autocomplete="off" maxlength="80" required>
+                        </div>
+
+                        <button type="submit">Add class</button>
+                    </form>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Students</th>
+                                <th>Active timetables</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="classesTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="timetableContainer">
+                    <div class="panel-head">
+                        <h3>Timetable</h3>
+
+                        <button type="button" id="createTimetableButton" class="createTimetableButton"
+                            aria-expanded="false">
+                            <span class="btn-label">Create Timetable</span>
+                            <span class="close-x" aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <div id="createTimetableContainer">
+
+                        <h3 id="timetableFormTitle">Create Timetable</h3>
+
+                        <form id="createTimetableForm">
+                            <div class="form-group">
+
+                                <label for="timetableCourse">Course</label>
+
+                                <input type="text" id="timetableCourse" placeholder="Search or enter a course"
+                                    autocomplete="off" required>
+
+                                <div id="courseSuggestions" class="suggestions"></div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="timetableClass">Class</label>
+
+                                <select id="timetableClass" required>
+                                    <option value="">Select class</option>
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="timetableInstructor">Instructor</label>
+
+                                <input type="text" id="timetableInstructor" placeholder="Search Instructor"
+                                    autocomplete="off" required>
+
+                                <div id="instructorSuggestions" class="suggestions"></div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Days</label>
+
+                                <div id="dayButtons">
+
+                                    <button type="button" data-day="monday">
+                                        <span>Monday</span>
+                                        <span class="remove-day">×</span>
+                                    </button>
+
+                                    <button type="button" data-day="tuesday">
+                                        <span>Tuesday</span>
+                                        <span class="remove-day">×</span>
+                                    </button>
+
+                                    <button type="button" data-day="wednesday">
+                                        <span>Wednesday</span>
+                                        <span class="remove-day">×</span>
+                                    </button>
+
+                                    <button type="button" data-day="thursday">
+                                        <span>Thursday</span>
+                                        <span class="remove-day">×</span>
+                                    </button>
+
+                                    <button type="button" data-day="friday">
+                                        <span>Friday</span>
+                                        <span class="remove-day">×</span>
+                                    </button>
+
+                                    <button type="button" data-day="saturday">
+                                        <span>Saturday</span>
+                                        <span class="remove-day">×</span>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="timetableStartTime">Start Time</label>
+
+                                <input type="time" id="timetableStartTime" required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="timetableEndTime">End Time</label>
+
+                                <input type="time" id="timetableEndTime" required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="effectiveFrom">Effective From</label>
+
+                                <input type="date" id="effectiveFrom" required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="effectiveUntil">Effective Until</label>
+
+                                <input type="date" id="effectiveUntil">
+
+                            </div>
+
+                            <button type="submit" id="submitTimetableButton">
+                                Create Timetable
+                            </button>
+
+                        </form>
+                    </div>
+
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Class</th>
+                                <th>Instructor</th>
+                                <th>Days</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="timetableTableBody">
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <div id="sessionsContainer">
+                    <div class="panel-head">
+                        <h3>Sessions</h3>
+                    </div>
+
+                    <p class="panel-hint">
+                        Postpone or cancel a class day, schedule a replacement, or undo a change.
+                        Upcoming days come from the timetables.
+                    </p>
+
+                    <div id="sessionFilters" class="filters">
+                        <div class="filter-field">
+                            <label for="sessionFrom">From</label>
+                            <input type="date" id="sessionFrom">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="sessionTo">To</label>
+                            <input type="date" id="sessionTo">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="sessionClassFilter">Class</label>
+                            <select id="sessionClassFilter">
+                                <option value="">All classes</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button id="loadSessionsButton">Show</button>
+                        </div>
+                    </div>
+
+                    <table class="report-table sessions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Course</th>
+                                <th>Class</th>
+                                <th>Instructor</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="sessionsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="summaryContainer">
+                    <div class="panel-head">
+                        <h3>Attendance Summary</h3>
+                    </div>
+
+                    <p class="panel-hint">
+                        Attendance rate for every student in a class, including students who never signed in.
+                        Sessions from before a student's account was created aren't counted, and sessions
+                        still waiting for check-out are left out of the rate.
+                    </p>
+
+                    <div class="filters">
+                        <div class="filter-field">
+                            <label for="sumClass">Class</label>
+                            <select id="sumClass">
+                                <option value="">Choose a class</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="sumCourse">Course (optional)</label>
+                            <input type="text" id="sumCourse" placeholder="All courses" autocomplete="off">
+                            <div id="sumCourseList" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="sumFrom">From</label>
+                            <input type="date" id="sumFrom">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="sumTo">To</label>
+                            <input type="date" id="sumTo">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="sumSort">Sort by</label>
+                            <select id="sumSort">
+                                <option value="name">Name</option>
+                                <option value="rate">Lowest attendance first</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button id="sumShow">Show</button>
+                            <button id="sumExport">Export CSV</button>
+                        </div>
+                    </div>
+
+                    <p class="summary-hint">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="16" x2="12" y2="12" />
+                            <line x1="12" y1="8" x2="12.01" y2="8" />
+                        </svg>
+                        <span><strong>Tip:</strong> click a student's name to see every session for them: attended,
+                            missed or not counted.</span>
+                    </p>
+
+                    <p id="sumInfo" class="report-count" aria-live="polite"></p>
+
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Sessions held</th>
+                                <th>On time</th>
+                                <th>Late</th>
+                                <th>Absent</th>
+                                <th>Counted as attended</th>
+                                <th>Attendance rate</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="sumBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="attendanceContainer">
+
+                    <h3>Attendance Reports</h3>
+
+                    <div id="attendanceFilters" class="filters">
+
+                        <div class="filter-field">
+                            <label for="courseFilter">Course</label>
+                            <input type="text" id="courseFilter" placeholder="Search course" autocomplete="off">
+                            <div id="courseFilterSuggestions" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="classFilter">Class</label>
+                            <select id="classFilter">
+                                <option value="">All classes</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="studentFilter">Student</label>
+                            <input type="text" id="studentFilter" placeholder="Search student" autocomplete="off">
+                            <div id="studentSuggestions" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="instructorFilter">Instructor</label>
+                            <input type="text" id="instructorFilter" placeholder="Search instructor" autocomplete="off">
+                            <div id="instructorFilterSuggestions" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="dateFilter">Date</label>
+                            <input type="date" id="dateFilter">
+                        </div>
+
+                        <div class="filter-actions">
+                            <button id="filterAttendanceButton">Filter</button>
+                            <button id="clearAttendanceFiltersButton">Clear Filters</button>
+                            <button id="exportAttendanceButton">Export CSV</button>
+                        </div>
+
+                    </div>
+
+
+                    <p id="attendanceCount" class="report-count" aria-live="polite"></p>
+
+                    <table class="report-table wide">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Class</th>
+                                <th>Date</th>
+                                <th>Session Time</th>
+                                <th>Sign In</th>
+                                <th>Sign Out</th>
+                                <th>Sign Out Method</th>
+                                <th>Status</th>
+                                <th>Class Attended</th>
+                                <th>Valid</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="attendanceTableBody">
+                        </tbody>
+                    </table>
+
+                    <div id="attendancePager" class="pager" hidden>
+                        <button type="button" id="attendancePrev" class="btn-outline">Previous</button>
+                        <span id="attendancePageInfo" aria-live="polite"></span>
+                        <button type="button" id="attendanceNext" class="btn-outline">Next</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="instructorDashboard">
+                <h2>Instructor Dashboard</h2>
+                <p class="page-subtitle">See your classes, who attended, and your attendance records.</p>
+
+                <div class="admin-actions" role="group" aria-label="Instructor sections">
+                    <button id="instructorScheduleButton">My Schedule</button>
+
+                    <button id="instructorTimetablesButton">My Timetables</button>
+
+                    <button id="instructorSummaryButton">Class Summary</button>
+
+                    <button id="instructorReportButton">Attendance Reports</button>
+                </div>
+
+                <div id="instructorScheduleContainer">
+                    <div class="panel-head">
+                        <h3>My Schedule</h3>
+                    </div>
+
+                    <p class="panel-hint">
+                        Open a class's roster to see who has checked in. Postponements and cancellations
+                        are made by an administrator.
+                    </p>
+
+                    <div class="filters">
+                        <div class="filter-field">
+                            <label for="instructorFrom">From</label>
+                            <input type="date" id="instructorFrom">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="instructorTo">To</label>
+                            <input type="date" id="instructorTo">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="instructorClassFilter">Class</label>
+                            <select id="instructorClassFilter">
+                                <option value="">All my classes</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button id="instructorLoadSchedule">Show</button>
+                        </div>
+                    </div>
+
+                    <table class="report-table sessions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Course</th>
+                                <th>Class</th>
+                                <th>Status</th>
+                                <th>Roster</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="instructorScheduleBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="instructorTimetablesContainer">
+                    <div class="panel-head">
+                        <h3>My Timetables</h3>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Class</th>
+                                <th>Days</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="instructorTimetablesBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="instructorSummaryContainer">
+                    <div class="panel-head">
+                        <h3>Attendance Summary</h3>
+                    </div>
+
+                    <p class="panel-hint">
+                        Attendance rate for every student in a class, including students who never signed in.
+                        Sessions from before a student's account was created aren't counted, and sessions
+                        still waiting for check-out are left out of the rate.
+                    </p>
+
+                    <div class="filters">
+                        <div class="filter-field">
+                            <label for="isumClass">Class</label>
+                            <select id="isumClass">
+                                <option value="">Choose a class</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="isumCourse">Course (optional)</label>
+                            <input type="text" id="isumCourse" placeholder="All courses" autocomplete="off">
+                            <div id="isumCourseList" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="isumFrom">From</label>
+                            <input type="date" id="isumFrom">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="isumTo">To</label>
+                            <input type="date" id="isumTo">
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="isumSort">Sort by</label>
+                            <select id="isumSort">
+                                <option value="name">Name</option>
+                                <option value="rate">Lowest attendance first</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button id="isumShow">Show</button>
+                            <button id="isumExport">Export CSV</button>
+                        </div>
+                    </div>
+
+                    <p class="summary-hint">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="16" x2="12" y2="12" />
+                            <line x1="12" y1="8" x2="12.01" y2="8" />
+                        </svg>
+                        <span><strong>Tip:</strong> click a student's name to see every session for them: attended,
+                            missed or not counted.</span>
+                    </p>
+
+                    <p id="isumInfo" class="report-count" aria-live="polite"></p>
+
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Sessions held</th>
+                                <th>On time</th>
+                                <th>Late</th>
+                                <th>Absent</th>
+                                <th>Counted as attended</th>
+                                <th>Attendance rate</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="isumBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="instructorReportContainer">
+                    <div class="panel-head">
+                        <h3>Attendance Reports</h3>
+                    </div>
+
+                    <div class="filters">
+                        <div class="filter-field">
+                            <label for="instCourse">Course</label>
+                            <input type="text" id="instCourse" placeholder="Search course" autocomplete="off">
+                            <div id="instCourseList" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="instClass">Class</label>
+                            <select id="instClass">
+                                <option value="">All my classes</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="instStudent">Student</label>
+                            <input type="text" id="instStudent" placeholder="Search student" autocomplete="off">
+                            <div id="instStudentList" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="instDate">Date</label>
+                            <input type="date" id="instDate">
+                        </div>
+
+                        <div class="filter-actions">
+                            <button id="instApply">Filter</button>
+                            <button id="instClear">Clear Filters</button>
+                            <button id="instExport">Export CSV</button>
+                        </div>
+                    </div>
+
+                    <p id="instCount" class="report-count" aria-live="polite"></p>
+
+                    <table class="report-table wide">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Class</th>
+                                <th>Date</th>
+                                <th>Session Time</th>
+                                <th>Sign In</th>
+                                <th>Sign Out</th>
+                                <th>Sign Out Method</th>
+                                <th>Status</th>
+                                <th>Class Attended</th>
+                                <th>Valid</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="instReportBody">
+                        </tbody>
+                    </table>
+
+                    <div id="instPager" class="pager" hidden>
+                        <button type="button" id="instPrev" class="btn-outline">Previous</button>
+                        <span id="instPageInfo" aria-live="polite"></span>
+                        <button type="button" id="instNext" class="btn-outline">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="studentDashboard">
+                <h2>Student Dashboard</h2>
+                <p class="page-subtitle">View your attendance records.</p>
+
+                <div id="studentSessionContainer">
+                    <h3>Current Session</h3>
+
+                    <div id="currentSession">
+                        <p>No active session.</p>
+                    </div>
+                </div>
+
+                <div id="studentAttendanceContainer">
+                    <h3>My Attendance</h3>
+
+                    <div id="studentAttendanceFilters" class="filters">
+
+                        <div class="filter-field">
+                            <label for="studentCourseFilter">Course</label>
+                            <input type="text" id="studentCourseFilter" placeholder="Search course" autocomplete="off">
+                            <div id="studentCourseSuggestions" class="suggestions"></div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="studentDateFilter">Date</label>
+                            <input type="date" id="studentDateFilter">
+                        </div>
+
+                        <div class="filter-actions">
+                            <button id="filterStudentAttendanceButton">Filter</button>
+                            <button id="clearStudentAttendanceFiltersButton">Clear Filters</button>
+                        </div>
+
+                    </div>
+
+                    <table class="report-table wide">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Date</th>
+                                <th>Session Time</th>
+                                <th>Sign In</th>
+                                <th>Sign Out</th>
+                                <th>Sign Out Method</th>
+                                <th>Status</th>
+                                <th>Class Attended</th>
+                                <th>Valid</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentAttendanceTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./js/common.js"></script>
+    <script src="./js/report.js"></script>
+    <script src="./js/summary.js"></script>
+    <script src="./js/notifications.js"></script>
+    <script src="./js/dashboard.js"></script>
+    <script src="./js/student.js"></script>
+    <script src="./js/users.js"></script>
+    <script src="./js/classes.js"></script>
+    <script src="./js/sessions.js"></script>
+    <script src="./js/timetable.js"></script>
+    <script src="./js/attendance.js"></script>
+    <script src="./js/instructor.js"></script>
+</body>
+
+</html>

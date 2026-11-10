@@ -12,9 +12,12 @@
     --muted: #5a6784;
     --line: #dbe3f0;
 
-    --ok: #0b7a4b;   --ok-bg: #e2f5ec;
-    --warn: #8a5a00; --warn-bg: #fdf0d0;
-    --bad: #b3261e;  --bad-bg: #fde8e6;
+    --ok: #0b7a4b;
+    --ok-bg: #e2f5ec;
+    --warn: #8a5a00;
+    --warn-bg: #fdf0d0;
+    --bad: #b3261e;
+    --bad-bg: #fde8e6;
 
     --r-sm: 6px;
     --r-md: 10px;
@@ -37,10 +40,28 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 { line-height: 1.2; letter-spacing: -0.015em; }
-h1 { font-size: 1.6rem; font-weight: 800; }
-h2 { font-size: 1.25rem; font-weight: 700; }
-h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 16px; }
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+}
+
+h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
 
 :focus-visible {
     outline: 3px solid var(--electric);
@@ -48,7 +69,10 @@ h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 16px; }
 }
 
 /* ---------- Forms ---------- */
-.form-group { position: relative; margin-bottom: 16px; }
+.form-group {
+    position: relative;
+    margin-bottom: 16px;
+}
 
 label {
     display: block;
@@ -57,7 +81,8 @@ label {
     margin-bottom: 6px;
 }
 
-input, select {
+input,
+select {
     width: 100%;
     font: inherit;
     color: var(--ink);
@@ -68,11 +93,17 @@ input, select {
     transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-input::placeholder { color: #93a0ba; }
+input::placeholder {
+    color: #93a0ba;
+}
 
-input:hover, select:hover { border-color: #b7c4dd; }
+input:hover,
+select:hover {
+    border-color: #b7c4dd;
+}
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     outline: none;
     border-color: var(--electric);
     box-shadow: 0 0 0 3px rgba(0, 119, 253, 0.2);
@@ -100,12 +131,24 @@ button {
     transition: background 0.15s, border-color 0.15s;
 }
 
-button:hover { background: var(--electric); border-color: var(--electric); }
-button:active { transform: translateY(1px); }
+button:hover {
+    background: var(--electric);
+    border-color: var(--electric);
+}
 
-button:disabled { opacity: 0.55; cursor: not-allowed; }
+button:active {
+    transform: translateY(1px);
+}
 
-form > button[type="submit"] { width: 100%; margin-top: 4px; }
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+form>button[type="submit"] {
+    width: 100%;
+    margin-top: 4px;
+}
 
 /* Message lines: hidden until JS fills them */
 :where(#loginMessage, #createUserMessage, #resetPasswordMessage, #createTimetableMessage) {
@@ -118,10 +161,25 @@ form > button[type="submit"] { width: 100%; margin-top: 4px; }
     border-left: 4px solid var(--steel);
     border-radius: 0 var(--r-sm) var(--r-sm) 0;
 }
-#loginMessage:empty, #createUserMessage:empty, #resetPasswordMessage:empty,
-#createTimetableMessage:empty { display: none; }
-p.error   { color: var(--bad); background: var(--bad-bg); border-left-color: var(--bad); }
-p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var(--ok); }
+
+#loginMessage:empty,
+#createUserMessage:empty,
+#resetPasswordMessage:empty,
+#createTimetableMessage:empty {
+    display: none;
+}
+
+p.error {
+    color: var(--bad);
+    background: var(--bad-bg);
+    border-left-color: var(--bad);
+}
+
+p.success {
+    color: var(--ok);
+    background: var(--ok-bg);
+    border-left-color: var(--ok);
+}
 
 /* ---------- Login ---------- */
 .login-container {
@@ -156,10 +214,27 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     mask-image: linear-gradient(200deg, #000 0%, transparent 62%);
 }
 
-.brand-panel > * { position: relative; }
-.brand-panel img { height: 44px; width: auto; align-self: flex-start; }
-.brand-panel h2 { font-size: clamp(2rem, 3.4vw, 3rem); font-weight: 800; max-width: 12ch; }
-.brand-panel p { margin-top: 14px; max-width: 34ch; color: #c5d4f2; }
+.brand-panel>* {
+    position: relative;
+}
+
+.brand-panel img {
+    height: 44px;
+    width: auto;
+    align-self: flex-start;
+}
+
+.brand-panel h2 {
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-weight: 800;
+    max-width: 12ch;
+}
+
+.brand-panel p {
+    margin-top: 14px;
+    max-width: 34ch;
+    color: #c5d4f2;
+}
 
 .login-card {
     align-self: center;
@@ -168,8 +243,14 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     padding: 40px 0;
 }
 
-.login-card .form-logo { display: none; }
-.login-subtitle { margin: 6px 0 28px; color: var(--muted); }
+.login-card .form-logo {
+    display: none;
+}
+
+.login-subtitle {
+    margin: 6px 0 28px;
+    color: var(--muted);
+}
 
 #forgotPasswordButton {
     display: block;
@@ -182,7 +263,11 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     text-decoration: underline;
     text-underline-offset: 3px;
 }
-#forgotPasswordButton:hover { color: var(--electric); background: none; }
+
+#forgotPasswordButton:hover {
+    color: var(--electric);
+    background: none;
+}
 
 /* ---------- Reset password ---------- */
 #resetPasswordPage {
@@ -194,8 +279,18 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     border-top: 5px solid var(--logo-blue);
     border-radius: var(--r-md);
 }
-#resetPasswordPage h1 { margin-bottom: 24px; }
-.form-logo { display: block; height: 34px; width: auto; margin-bottom: 22px; }
+
+#resetPasswordPage h1 {
+    margin-bottom: 24px;
+}
+
+.form-logo {
+    display: block;
+    height: 34px;
+    width: auto;
+    margin-bottom: 22px;
+}
+
 .back-link {
     display: inline-block;
     margin-top: 18px;
@@ -225,9 +320,22 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     transform: translateX(calc(100% + 40px));
     transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, visibility 0.4s;
 }
-.toast.show    { opacity: 1; visibility: visible; transform: none; }
-.toast.success { border-left-color: var(--ok); }
-.toast.error   { border-left-color: var(--bad); color: var(--bad); background: var(--bad-bg); }
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
+.toast.success {
+    border-left-color: var(--ok);
+}
+
+.toast.error {
+    border-left-color: var(--bad);
+    color: var(--bad);
+    background: var(--bad-bg);
+}
 
 .topbar {
     display: flex;
@@ -238,7 +346,12 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     color: #fff;
     border-bottom: 4px solid var(--electric);
 }
-.topbar-logo { height: 30px; width: auto; }
+
+.topbar-logo {
+    height: 30px;
+    width: auto;
+}
+
 .topbar-user {
     display: flex;
     align-items: center;
@@ -246,21 +359,47 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     margin-left: auto;
     font-weight: 600;
 }
+
 #logoutButton {
     background: transparent;
     border-color: rgba(255, 255, 255, 0.4);
     padding: 7px 14px;
 }
-#logoutButton:hover { background: #fff; border-color: #fff; color: var(--navy); }
 
-.content { max-width: 1600px; margin: 0 auto; padding: 32px clamp(16px, 2.5vw, 32px); }
+#logoutButton:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--navy);
+}
+
+.content {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 32px clamp(16px, 2.5vw, 32px);
+}
 
 /* JS reveals these with inline display:block */
-#adminDashboard, #studentDashboard, #usersContainer, #createUserContainer,
-#timetableContainer, #attendanceContainer, #createTimetableContainer { display: none; }
+#adminDashboard,
+#studentDashboard,
+#usersContainer,
+#createUserContainer,
+#timetableContainer,
+#attendanceContainer,
+#createTimetableContainer {
+    display: none;
+}
 
-#adminDashboard > h2, #studentDashboard > h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
-.page-subtitle { margin-bottom: 22px; color: var(--muted); }
+#adminDashboard>h2,
+#studentDashboard>h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.page-subtitle {
+    margin-bottom: 22px;
+    color: var(--muted);
+}
 
 .admin-actions {
     display: flex;
@@ -275,17 +414,20 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     border-radius: 12px;
     box-shadow: var(--shadow);
 }
+
 .admin-actions button {
     padding: 8px 16px;
     color: var(--muted);
     background: transparent;
     border-color: transparent;
 }
+
 .admin-actions button:hover {
     color: var(--logo-blue);
     background: #eaf1fc;
     border-color: transparent;
 }
+
 .admin-actions button.active,
 .admin-actions button.active:hover {
     color: #fff;
@@ -293,19 +435,23 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     border-color: var(--logo-blue);
 }
 
-.filter-actions button + button {
+.filter-actions button+button {
     color: var(--logo-blue);
     background: transparent;
     border-color: var(--line);
 }
-.filter-actions button + button:hover {
+
+.filter-actions button+button:hover {
     color: #fff;
     background: var(--logo-blue);
     border-color: var(--logo-blue);
 }
 
-#usersContainer, #createUserContainer, #timetableContainer,
-#attendanceContainer, #studentAttendanceContainer {
+#usersContainer,
+#createUserContainer,
+#timetableContainer,
+#attendanceContainer,
+#studentAttendanceContainer {
     margin-bottom: 24px;
     padding: 28px;
     background: var(--surface);
@@ -318,15 +464,38 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
 }
 
 /* Create user: a centered card */
-#createUserContainer { max-width: 520px; margin-left: auto; margin-right: auto; }
-#createUserContainer h3 { margin-bottom: 22px; font-size: 1.25rem; text-align: center; }
+#createUserContainer {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#createUserContainer h3 {
+    margin-bottom: 22px;
+    font-size: 1.25rem;
+    text-align: center;
+}
 
 @keyframes panel-in {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: none; }
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
-#usersContainer, #createUserContainer, #timetableContainer,
-#attendanceContainer, #studentAttendanceContainer, #createTimetableContainer { animation: panel-in 0.22s ease-out; }
+
+#usersContainer,
+#createUserContainer,
+#timetableContainer,
+#attendanceContainer,
+#studentAttendanceContainer,
+#createTimetableContainer {
+    animation: panel-in 0.22s ease-out;
+}
 
 /* ---------- Create timetable ---------- */
 #createTimetableButton {
@@ -337,17 +506,22 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     background: var(--surface);
     border-color: var(--line);
 }
+
 #createTimetableButton:hover {
     color: #fff;
     background: var(--logo-blue);
     border-color: var(--logo-blue);
 }
+
 #createTimetableButton[aria-expanded="true"] {
     color: #fff;
     background: var(--logo-blue);
     border-color: var(--logo-blue);
 }
-#createTimetableButton[aria-expanded="true"] .close-x { display: inline-flex; }
+
+#createTimetableButton[aria-expanded="true"] .close-x {
+    display: inline-flex;
+}
 
 #createTimetableContainer {
     margin-bottom: 24px;
@@ -363,10 +537,13 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     gap: 0 16px;
     max-width: 640px;
 }
+
 /* course, instructor and days take a full row; times and dates pair up */
 #createTimetableForm .form-group:nth-child(-n+4),
-#createTimetableForm > button,
-#createTimetableForm > p { grid-column: 1 / -1; }
+#createTimetableForm>button,
+#createTimetableForm>p {
+    grid-column: 1 / -1;
+}
 
 .panel-head {
     display: flex;
@@ -376,8 +553,14 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     gap: 12px;
     margin-bottom: 18px;
 }
-.panel-head h3 { margin: 0; }
-.panel-head #createTimetableButton { margin-bottom: 0; }
+
+.panel-head h3 {
+    margin: 0;
+}
+
+.panel-head #createTimetableButton {
+    margin-bottom: 0;
+}
 
 #createTimetableContainer h3 {
     margin-bottom: 18px;
@@ -400,12 +583,17 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     border-radius: var(--r-sm);
     box-shadow: 0 8px 24px rgba(6, 26, 74, 0.14);
 }
-.suggestions:empty { display: none; }
+
+.suggestions:empty {
+    display: none;
+}
+
 .suggestions div {
     padding: 9px 12px;
     font-size: 0.9rem;
     cursor: pointer;
 }
+
 .suggestions div:hover,
 .suggestions div.active {
     color: var(--logo-blue);
@@ -413,7 +601,12 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
 }
 
 /* Day toggles: outlined when off, filled with an x when selected */
-#dayButtons { display: flex; flex-wrap: wrap; gap: 8px; }
+#dayButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 #dayButtons button {
     display: inline-flex;
     align-items: center;
@@ -422,14 +615,21 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     background: var(--surface);
     border-color: var(--line);
 }
-#dayButtons button:hover { background: #eaf1fc; border-color: var(--steel); }
+
+#dayButtons button:hover {
+    background: #eaf1fc;
+    border-color: var(--steel);
+}
+
 #dayButtons button.selected,
 #dayButtons button.selected:hover {
     color: #fff;
     background: var(--logo-blue);
     border-color: var(--logo-blue);
 }
-.remove-day, .close-x {
+
+.remove-day,
+.close-x {
     display: none;
     align-items: center;
     justify-content: center;
@@ -445,8 +645,15 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
     border-radius: 5px;
     transition: background 0.15s;
 }
-.remove-day:hover, .close-x:hover { background: rgba(255, 255, 255, 0.35); }
-#dayButtons button.selected .remove-day { display: inline-flex; }
+
+.remove-day:hover,
+.close-x:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+#dayButtons button.selected .remove-day {
+    display: inline-flex;
+}
 
 /* Shown instead of the dashboards for roles without one yet */
 .notice {
@@ -460,7 +667,11 @@ p.success { color: var(--ok);  background: var(--ok-bg);  border-left-color: var
 }
 
 /* ---------- Tables ---------- */
-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
 
 
 th {
@@ -474,8 +685,14 @@ th {
     padding: 10px 14px;
     white-space: nowrap;
 }
-th:first-child { border-radius: var(--r-sm) 0 0 var(--r-sm); }
-th:last-child  { border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+
+th:first-child {
+    border-radius: var(--r-sm) 0 0 var(--r-sm);
+}
+
+th:last-child {
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
 
 td {
     padding: 12px 14px;
@@ -483,14 +700,35 @@ td {
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
-td:first-child { font-weight: 600; }
+
+td:first-child {
+    font-weight: 600;
+}
 
 /* Report tables: wider panels, tighter cells and wrapping text so more columns fit before scrolling */
-#attendanceContainer, #studentAttendanceContainer { padding: 20px; }
-.report-table { min-width: 880px; font-size: 0.86rem; }
-.report-table th, .report-table td { padding: 10px; white-space: normal; }
-.report-table th { vertical-align: bottom; }
-#studentAttendanceFilters { grid-template-columns: repeat(auto-fit, minmax(190px, 260px)); }
+#attendanceContainer,
+#studentAttendanceContainer {
+    padding: 20px;
+}
+
+.report-table {
+    min-width: 880px;
+    font-size: 0.86rem;
+}
+
+.report-table th,
+.report-table td {
+    padding: 10px;
+    white-space: normal;
+}
+
+.report-table th {
+    vertical-align: bottom;
+}
+
+#studentAttendanceFilters {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 260px));
+}
 
 .empty-row td,
 .empty-row:hover td {
@@ -501,7 +739,11 @@ td:first-child { font-weight: 600; }
     background: transparent;
     white-space: normal;
 }
-#timetableTableBody td:nth-child(4) { text-transform: capitalize; }
+
+#timetableTableBody td:nth-child(4) {
+    text-transform: capitalize;
+}
+
 td button {
     padding: 5px 12px;
     font-size: 0.8rem;
@@ -509,10 +751,24 @@ td button {
     background: var(--surface);
     border-color: var(--line);
 }
-td button + button { margin-left: 6px; }
-td button:hover { color: #fff; background: var(--logo-blue); border-color: var(--logo-blue); }
-tbody tr:hover td { background: #f7faff; }
-tbody tr:last-child td { border-bottom: 0; }
+
+td button+button {
+    margin-left: 6px;
+}
+
+td button:hover {
+    color: #fff;
+    background: var(--logo-blue);
+    border-color: var(--logo-blue);
+}
+
+tbody tr:hover td {
+    background: #f7faff;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
 
 /* Filter bars: the fields share the row equally and the buttons sit at its end
    on the SAME line, level with the inputs. If the screen is too narrow, the
@@ -528,10 +784,20 @@ tbody tr:last-child td { border-bottom: 0; }
     border: 1px solid var(--line);
     border-radius: var(--r-md);
 }
-.filter-field { position: relative; flex: 1 1 130px; min-width: 0; }
+
+.filter-field {
+    position: relative;
+    flex: 1 1 130px;
+    min-width: 0;
+}
+
 /* every control the same height (date inputs used to be 2px taller, which
    pushed their labels 2px out of line) */
-.filters input, .filters select { height: 46px; }
+.filters input,
+.filters select {
+    height: 46px;
+}
+
 /* the buttons: one row, all the same width and height, never wrapping text */
 .filter-actions {
     display: grid;
@@ -541,7 +807,12 @@ tbody tr:last-child td { border-bottom: 0; }
     flex: 0 0 auto;
     margin-left: auto;
 }
-.filter-actions button { height: 46px; padding: 0 12px; white-space: nowrap; }
+
+.filter-actions button {
+    height: 46px;
+    padding: 0 12px;
+    white-space: nowrap;
+}
 
 /* On a phone three buttons side by side are wider than the bar, so they stack,
    each the full width of the bar */
@@ -553,7 +824,11 @@ tbody tr:last-child td { border-bottom: 0; }
         grid-auto-columns: auto;
     }
 }
-#attendanceContainer, #studentAttendanceContainer { min-height: 360px; }
+
+#attendanceContainer,
+#studentAttendanceContainer {
+    min-height: 360px;
+}
 
 
 /* ---------- Badges ---------- */
@@ -565,31 +840,98 @@ tbody tr:last-child td { border-bottom: 0; }
     border-radius: 999px;
     text-transform: capitalize;
 }
-.badge-success { color: var(--ok);   background: var(--ok-bg); }
-.badge-warn    { color: var(--warn); background: var(--warn-bg); }
-.badge-danger  { color: var(--bad);  background: var(--bad-bg); }
-.badge-muted   { color: var(--muted); background: #e9edf5; }
-.badge-role    { color: #fff; background: var(--electric); }
-td .badge-role { color: var(--logo-blue); background: #dbe8fc; }
-#roleBadge:empty { display: none; }
+
+.badge-success {
+    color: var(--ok);
+    background: var(--ok-bg);
+}
+
+.badge-warn {
+    color: var(--warn);
+    background: var(--warn-bg);
+}
+
+.badge-danger {
+    color: var(--bad);
+    background: var(--bad-bg);
+}
+
+.badge-muted {
+    color: var(--muted);
+    background: #e9edf5;
+}
+
+.badge-role {
+    color: #fff;
+    background: var(--electric);
+}
+
+td .badge-role {
+    color: var(--logo-blue);
+    background: #dbe8fc;
+}
+
+#roleBadge:empty {
+    display: none;
+}
 
 /* ---------- Small screens ---------- */
 @media (max-width: 860px) {
-    .login-container { display: block; }
-    .brand-panel { display: none; }
-    .login-card { margin: 0 auto; padding: 48px 0; }
-    .login-card .form-logo { display: block; }
-    .content { padding: 20px 16px; }
-    .toast { top: 12px; right: 16px; left: 16px; max-width: none; }
-    .topbar { padding: 12px 16px; flex-wrap: wrap; }
-    #usersContainer, #createUserContainer, #timetableContainer, #attendanceContainer,
-    #studentAttendanceContainer { padding: 16px; }
-    #createTimetableContainer { padding: 16px; }
-    #createTimetableForm { grid-template-columns: 1fr; }
+    .login-container {
+        display: block;
+    }
+
+    .brand-panel {
+        display: none;
+    }
+
+    .login-card {
+        margin: 0 auto;
+        padding: 48px 0;
+    }
+
+    .login-card .form-logo {
+        display: block;
+    }
+
+    .content {
+        padding: 20px 16px;
+    }
+
+    .toast {
+        top: 12px;
+        right: 16px;
+        left: 16px;
+        max-width: none;
+    }
+
+    .topbar {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+    }
+
+    #usersContainer,
+    #createUserContainer,
+    #timetableContainer,
+    #attendanceContainer,
+    #studentAttendanceContainer {
+        padding: 16px;
+    }
+
+    #createTimetableContainer {
+        padding: 16px;
+    }
+
+    #createTimetableForm {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; animation: none !important; }
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
 }
 
 /* ---------- Phase 1: student dashboard ---------- */
@@ -599,6 +941,7 @@ td .badge-role { color: var(--logo-blue); background: #dbe8fc; }
     gap: 14px;
     margin-bottom: 24px;
 }
+
 .stat {
     padding: 16px 18px;
     background: var(--surface);
@@ -606,6 +949,7 @@ td .badge-role { color: var(--logo-blue); background: #dbe8fc; }
     border-radius: var(--r-md);
     box-shadow: var(--shadow);
 }
+
 .stat-value {
     font-size: 1.7rem;
     font-weight: 800;
@@ -614,7 +958,13 @@ td .badge-role { color: var(--logo-blue); background: #dbe8fc; }
     color: var(--logo-blue);
     font-variant-numeric: tabular-nums;
 }
-.stat-label { margin-top: 4px; font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+
+.stat-label {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+}
 
 #studentSessionContainer {
     margin-bottom: 24px;
@@ -632,32 +982,82 @@ td .badge-role { color: var(--logo-blue); background: #dbe8fc; }
     align-items: center;
     gap: 16px 24px;
 }
-.session-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.015em; }
-.session-meta { margin-top: 2px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.session-note { margin-top: 6px; font-size: 0.9rem; color: var(--muted); }
-.session-state { display: flex; gap: 6px; }
-.session-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.session-empty { margin-bottom: 12px; font-weight: 500; color: var(--muted); }
-#currentSession > .session-empty:last-child { margin-bottom: 0; }
+
+.session-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+}
+
+.session-meta {
+    margin-top: 2px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.session-note {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.session-state {
+    display: flex;
+    gap: 6px;
+}
+
+.session-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.session-empty {
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+#currentSession>.session-empty:last-child {
+    margin-bottom: 0;
+}
 
 .btn-outline {
     color: var(--logo-blue);
     background: transparent;
     border-color: var(--line);
 }
+
 .btn-outline:hover {
     color: #fff;
     background: var(--logo-blue);
     border-color: var(--logo-blue);
 }
+
 /* disabled buttons shouldn't react to hover */
-button:disabled:hover { background: var(--logo-blue); border-color: var(--logo-blue); }
-.btn-outline:disabled:hover { color: var(--logo-blue); background: transparent; border-color: var(--line); }
+button:disabled:hover {
+    background: var(--logo-blue);
+    border-color: var(--logo-blue);
+}
+
+.btn-outline:disabled:hover {
+    color: var(--logo-blue);
+    background: transparent;
+    border-color: var(--line);
+}
 
 @media (max-width: 860px) {
-    #studentSessionContainer { padding: 16px; }
-    .session-card { grid-template-columns: 1fr; }
-    .session-actions button { flex: 1; }
+    #studentSessionContainer {
+        padding: 16px;
+    }
+
+    .session-card {
+        grid-template-columns: 1fr;
+    }
+
+    .session-actions button {
+        flex: 1;
+    }
 }
 
 
@@ -686,8 +1086,16 @@ button:disabled:hover { background: var(--logo-blue); border-color: var(--logo-b
     border: 1px solid var(--line);
     border-radius: var(--r-md);
 }
-.inline-form .form-group { flex: 1 1 260px; margin-bottom: 0; }
-.inline-form > button[type="submit"] { width: auto; margin-top: 0; }
+
+.inline-form .form-group {
+    flex: 1 1 260px;
+    margin-bottom: 0;
+}
+
+.inline-form>button[type="submit"] {
+    width: auto;
+    margin-top: 0;
+}
 
 /* dropdowns that live inside table cells */
 td select {
@@ -696,16 +1104,24 @@ td select {
     font-size: 0.85rem;
     background-position: right 10px center;
 }
-td select.unassigned { border-color: #e2b34b; background-color: var(--warn-bg); }
+
+td select.unassigned {
+    border-color: #e2b34b;
+    background-color: var(--warn-bg);
+}
 
 @media (max-width: 860px) {
-    #classesContainer { padding: 16px; }
+    #classesContainer {
+        padding: 16px;
+    }
 }
 
 
 /* ---------- Phase 3: sessions panel, dialog, report extras ---------- */
 /* an author display rule must never defeat the hidden attribute */
-[hidden] { display: none !important; }
+[hidden] {
+    display: none !important;
+}
 
 #sessionsContainer {
     display: none;
@@ -718,22 +1134,74 @@ td select.unassigned { border-color: #e2b34b; background-color: var(--warn-bg); 
     overflow-x: auto;
     animation: panel-in 0.22s ease-out;
 }
-.panel-hint { margin: -6px 0 16px; color: var(--muted); font-size: 0.9rem; }
-.sessions-table { min-width: 980px; }
-.sessions-table td { vertical-align: top; }
-.sessions-table td .badge { margin-left: 8px; }
-.sessions-table td.details { min-width: 220px; font-size: 0.85rem; color: var(--muted); }
-.sessions-table td:last-child { white-space: normal; }
-.sessions-table td:last-child button { margin: 0 6px 6px 0; }
-.sessions-table tr.today td { background: #f4f8ff; }
-.sessions-table tr.replacement td:first-child { box-shadow: inset 3px 0 0 var(--steel); }
 
-td button.btn-danger-outline { color: var(--bad); border-color: #f0c4c0; }
-td button.btn-danger-outline:hover { color: #fff; background: var(--bad); border-color: var(--bad); }
-.btn-danger, .btn-danger:hover { background: var(--bad); border-color: var(--bad); }
-.btn-danger:hover { filter: brightness(0.92); }
+.panel-hint {
+    margin: -6px 0 16px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
 
-.report-count { margin: -4px 0 12px; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.sessions-table {
+    min-width: 980px;
+}
+
+.sessions-table td {
+    vertical-align: top;
+}
+
+.sessions-table td .badge {
+    margin-left: 8px;
+}
+
+.sessions-table td.details {
+    min-width: 220px;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.sessions-table td:last-child {
+    white-space: normal;
+}
+
+.sessions-table td:last-child button {
+    margin: 0 6px 6px 0;
+}
+
+.sessions-table tr.today td {
+    background: #f4f8ff;
+}
+
+.sessions-table tr.replacement td:first-child {
+    box-shadow: inset 3px 0 0 var(--steel);
+}
+
+td button.btn-danger-outline {
+    color: var(--bad);
+    border-color: #f0c4c0;
+}
+
+td button.btn-danger-outline:hover {
+    color: #fff;
+    background: var(--bad);
+    border-color: var(--bad);
+}
+
+.btn-danger,
+.btn-danger:hover {
+    background: var(--bad);
+    border-color: var(--bad);
+}
+
+.btn-danger:hover {
+    filter: brightness(0.92);
+}
+
+.report-count {
+    margin: -4px 0 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+}
 
 /* modal dialog */
 dialog#sessionDialog {
@@ -746,10 +1214,27 @@ dialog#sessionDialog {
     border-radius: var(--r-md);
     box-shadow: 0 24px 60px rgba(6, 26, 74, 0.3);
 }
-dialog#sessionDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
-#sessionDialog h3 { margin-bottom: 8px; }
-.dialog-summary { margin-bottom: 18px; font-size: 0.9rem; color: var(--muted); }
-.dialog-warning { margin-top: 6px; color: var(--warn); font-weight: 600; }
+
+dialog#sessionDialog::backdrop {
+    background: rgba(6, 26, 74, 0.45);
+}
+
+#sessionDialog h3 {
+    margin-bottom: 8px;
+}
+
+.dialog-summary {
+    margin-bottom: 18px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.dialog-warning {
+    margin-top: 6px;
+    color: var(--warn);
+    font-weight: 600;
+}
+
 .check-row {
     display: flex;
     align-items: center;
@@ -758,15 +1243,45 @@ dialog#sessionDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
     font-weight: 600;
     cursor: pointer;
 }
-.check-row input { width: auto; accent-color: var(--logo-blue); }
-.field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
-#sessionDialogError { margin: 0 0 14px; padding: 10px 12px; font-size: 0.9rem; font-weight: 500; border-radius: 0 var(--r-sm) var(--r-sm) 0; }
-#sessionDialogError:empty { display: none; }
-.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+.check-row input {
+    width: auto;
+    accent-color: var(--logo-blue);
+}
+
+.field-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 14px;
+}
+
+#sessionDialogError {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+#sessionDialogError:empty {
+    display: none;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 6px;
+}
 
 @media (max-width: 860px) {
-    #sessionsContainer { padding: 16px; }
-    dialog#sessionDialog { padding: 20px; }
+    #sessionsContainer {
+        padding: 16px;
+    }
+
+    dialog#sessionDialog {
+        padding: 20px;
+    }
 }
 
 
@@ -778,11 +1293,20 @@ dialog#sessionDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
     gap: 16px;
     margin-top: 16px;
 }
-.pager span { min-width: 110px; text-align: center; font-size: 0.9rem; font-weight: 600; color: var(--muted); }
+
+.pager span {
+    min-width: 110px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+}
 
 
 /* ---------- Phase 4: instructor dashboard ---------- */
-#instructorDashboard { display: none; }
+#instructorDashboard {
+    display: none;
+}
 
 #instructorScheduleContainer,
 #instructorTimetablesContainer,
@@ -798,8 +1322,15 @@ dialog#sessionDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
     animation: panel-in 0.22s ease-out;
 }
 
-#instructorTimetablesBody td:nth-child(3) { text-transform: capitalize; }
-.sessions-table .muted, .muted { color: var(--muted); font-size: 0.85rem; }
+#instructorTimetablesBody td:nth-child(3) {
+    text-transform: capitalize;
+}
+
+.sessions-table .muted,
+.muted {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
 
 dialog#rosterDialog {
     width: min(680px, calc(100vw - 32px));
@@ -812,19 +1343,57 @@ dialog#rosterDialog {
     border-radius: var(--r-md);
     box-shadow: 0 24px 60px rgba(6, 26, 74, 0.3);
 }
-dialog#rosterDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
-#rosterDialog h3 { margin-bottom: 8px; }
-.roster-counts { margin-bottom: 14px; font-size: 0.9rem; font-weight: 700; color: var(--logo-blue); }
-.roster-scroll { max-height: 50vh; overflow: auto; margin-bottom: 18px; border: 1px solid var(--line); border-radius: var(--r-sm); }
-.roster-scroll table { min-width: 460px; }
-#rosterError { margin: 0 0 14px; padding: 10px 12px; font-size: 0.9rem; font-weight: 500; border-radius: 0 var(--r-sm) var(--r-sm) 0; }
-#rosterError:empty { display: none; }
+
+dialog#rosterDialog::backdrop {
+    background: rgba(6, 26, 74, 0.45);
+}
+
+#rosterDialog h3 {
+    margin-bottom: 8px;
+}
+
+.roster-counts {
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--logo-blue);
+}
+
+.roster-scroll {
+    max-height: 50vh;
+    overflow: auto;
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+}
+
+.roster-scroll table {
+    min-width: 460px;
+}
+
+#rosterError {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+#rosterError:empty {
+    display: none;
+}
 
 @media (max-width: 860px) {
+
     #instructorScheduleContainer,
     #instructorTimetablesContainer,
-    #instructorReportContainer { padding: 16px; }
-    dialog#rosterDialog { padding: 20px; }
+    #instructorReportContainer {
+        padding: 16px;
+    }
+
+    dialog#rosterDialog {
+        padding: 20px;
+    }
 }
 
 
@@ -843,9 +1412,17 @@ dialog#rosterDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
 }
 
 /* attendance-rate tiles on the student dashboard */
-.stat-success .stat-value { color: var(--ok); }
-.stat-warn .stat-value { color: var(--warn); }
-.stat-danger .stat-value { color: var(--bad); }
+.stat-success .stat-value {
+    color: var(--ok);
+}
+
+.stat-warn .stat-value {
+    color: var(--warn);
+}
+
+.stat-danger .stat-value {
+    color: var(--bad);
+}
 
 #studentCourseSummary {
     margin-bottom: 24px;
@@ -855,13 +1432,29 @@ dialog#rosterDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
     border-radius: 14px;
     box-shadow: var(--shadow);
 }
-#studentCourseSummary:empty { display: none; }
-.table-scroll { overflow-x: auto; }
-#studentCourseSummary .report-table { min-width: 520px; }
+
+#studentCourseSummary:empty {
+    display: none;
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+#studentCourseSummary .report-table {
+    min-width: 520px;
+}
 
 /* loading and failed table states */
-tr.loading td { color: var(--muted); font-style: italic; }
-tr.error-row td { color: var(--bad); background: var(--bad-bg); }
+tr.loading td {
+    color: var(--muted);
+    font-style: italic;
+}
+
+tr.error-row td {
+    color: var(--bad);
+    background: var(--bad-bg);
+}
 
 /* top bar: change password sits beside log out */
 #changePasswordButton {
@@ -869,7 +1462,12 @@ tr.error-row td { color: var(--bad); background: var(--bad-bg); }
     border-color: rgba(255, 255, 255, 0.4);
     padding: 7px 14px;
 }
-#changePasswordButton:hover { background: #fff; border-color: #fff; color: var(--navy); }
+
+#changePasswordButton:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--navy);
+}
 
 dialog#passwordDialog {
     width: min(420px, calc(100vw - 32px));
@@ -881,11 +1479,33 @@ dialog#passwordDialog {
     border-radius: var(--r-md);
     box-shadow: 0 24px 60px rgba(6, 26, 74, 0.3);
 }
-dialog#passwordDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
-#passwordDialog h3 { margin-bottom: 18px; }
-#passwordError { margin: 0 0 14px; padding: 10px 12px; font-size: 0.9rem; font-weight: 500; border-radius: 0 var(--r-sm) var(--r-sm) 0; }
-#passwordError:empty { display: none; }
-.field-hint { display: block; margin-top: 5px; font-size: 0.8rem; color: var(--muted); }
+
+dialog#passwordDialog::backdrop {
+    background: rgba(6, 26, 74, 0.45);
+}
+
+#passwordDialog h3 {
+    margin-bottom: 18px;
+}
+
+#passwordError {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+#passwordError:empty {
+    display: none;
+}
+
+.field-hint {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
 
 /* keyboard users can jump past the header */
 .skip-link {
@@ -899,23 +1519,60 @@ dialog#passwordDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
     background: var(--logo-blue);
     border-radius: var(--r-sm);
 }
-.skip-link:focus { top: 12px; }
-main:focus { outline: none; }
+
+.skip-link:focus {
+    top: 12px;
+}
+
+main:focus {
+    outline: none;
+}
 
 @media (max-width: 860px) {
-    #summaryContainer, #instructorSummaryContainer, #studentCourseSummary { padding: 16px; }
-    .topbar-user { width: 100%; margin-left: 0; flex-wrap: wrap; }
-    dialog#passwordDialog { padding: 20px; }
-    .admin-actions { width: 100%; }
-    .admin-actions button { flex: 1 1 auto; }
+
+    #summaryContainer,
+    #instructorSummaryContainer,
+    #studentCourseSummary {
+        padding: 16px;
+    }
+
+    .topbar-user {
+        width: 100%;
+        margin-left: 0;
+        flex-wrap: wrap;
+    }
+
+    dialog#passwordDialog {
+        padding: 20px;
+    }
+
+    .admin-actions {
+        width: 100%;
+    }
+
+    .admin-actions button {
+        flex: 1 1 auto;
+    }
 }
 
 /* fingers need bigger targets than mouse pointers */
 @media (pointer: coarse) {
-    button { min-height: 44px; }
-    td button { min-height: 40px; }
-    input, select { min-height: 44px; }
-    input[type="checkbox"] { min-height: 0; }
+    button {
+        min-height: 44px;
+    }
+
+    td button {
+        min-height: 40px;
+    }
+
+    input,
+    select {
+        min-height: 44px;
+    }
+
+    input[type="checkbox"] {
+        min-height: 0;
+    }
 }
 
 
@@ -947,10 +1604,21 @@ td button.link-button:hover,
     text-decoration: underline;
     text-underline-offset: 3px;
 }
-.link-button:hover, td button.link-button:hover { color: var(--electric); }
-.link-button:disabled { opacity: 0.45; cursor: default; text-decoration: none; }
 
-.notifications { position: relative; }
+.link-button:hover,
+td button.link-button:hover {
+    color: var(--electric);
+}
+
+.link-button:disabled {
+    opacity: 0.45;
+    cursor: default;
+    text-decoration: none;
+}
+
+.notifications {
+    position: relative;
+}
 
 .icon-button {
     position: relative;
@@ -965,7 +1633,12 @@ td button.link-button:hover,
     border-color: rgba(255, 255, 255, 0.4);
     border-radius: 50%;
 }
-.icon-button:hover { color: var(--navy); background: #fff; border-color: #fff; }
+
+.icon-button:hover {
+    color: var(--navy);
+    background: #fff;
+    border-color: #fff;
+}
 
 .notification-count {
     position: absolute;
@@ -998,6 +1671,7 @@ td button.link-button:hover,
     border-radius: var(--r-md);
     box-shadow: 0 16px 40px rgba(6, 26, 74, 0.22);
 }
+
 .notifications-head {
     display: flex;
     align-items: center;
@@ -1006,9 +1680,20 @@ td button.link-button:hover,
     padding: 10px 16px;
     border-bottom: 1px solid var(--line);
 }
-.notifications-status { padding: 14px 16px; font-size: 0.9rem; color: var(--muted); }
-.notifications-status:empty { display: none; }
-.notifications-list { list-style: none; }
+
+.notifications-status {
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.notifications-status:empty {
+    display: none;
+}
+
+.notifications-list {
+    list-style: none;
+}
 
 .notifications-list .notification-item {
     display: block;
@@ -1022,14 +1707,47 @@ td button.link-button:hover,
     border-bottom: 1px solid var(--line);
     border-radius: 0;
 }
-.notifications-list .notification-item:hover { background: #f4f8ff; border-color: var(--line); }
-.notifications-list .notification-item.unread { background: #eef5ff; box-shadow: inset 4px 0 0 var(--electric); }
-.notifications-list .notification-item.unread:hover { background: #e3eeff; }
-.notification-title, .notification-message, .notification-time { display: block; }
-.notification-title { font-size: 0.92rem; }
-.notification-message { margin-top: 3px; font-size: 0.85rem; color: var(--ink); }
-.notification-time { margin-top: 5px; font-size: 0.75rem; color: var(--muted); }
-#notificationsMore { display: block; margin: 12px auto 0; }
+
+.notifications-list .notification-item:hover {
+    background: #f4f8ff;
+    border-color: var(--line);
+}
+
+.notifications-list .notification-item.unread {
+    background: #eef5ff;
+    box-shadow: inset 4px 0 0 var(--electric);
+}
+
+.notifications-list .notification-item.unread:hover {
+    background: #e3eeff;
+}
+
+.notification-title,
+.notification-message,
+.notification-time {
+    display: block;
+}
+
+.notification-title {
+    font-size: 0.92rem;
+}
+
+.notification-message {
+    margin-top: 3px;
+    font-size: 0.85rem;
+    color: var(--ink);
+}
+
+.notification-time {
+    margin-top: 5px;
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+#notificationsMore {
+    display: block;
+    margin: 12px auto 0;
+}
 
 dialog#studentDetailDialog {
     width: min(720px, calc(100vw - 32px));
@@ -1042,17 +1760,45 @@ dialog#studentDetailDialog {
     border-radius: var(--r-md);
     box-shadow: 0 24px 60px rgba(6, 26, 74, 0.3);
 }
-dialog#studentDetailDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
-#studentDetailDialog h3 { margin-bottom: 8px; }
-#studentDetailDialog .roster-scroll table { min-width: 520px; }
-#studentDetailDialog td { white-space: normal; }
-#studentDetailDialog .muted { margin-top: 4px; }
+
+dialog#studentDetailDialog::backdrop {
+    background: rgba(6, 26, 74, 0.45);
+}
+
+#studentDetailDialog h3 {
+    margin-bottom: 8px;
+}
+
+#studentDetailDialog .roster-scroll table {
+    min-width: 520px;
+}
+
+#studentDetailDialog td {
+    white-space: normal;
+}
+
+#studentDetailDialog .muted {
+    margin-top: 4px;
+}
 
 @media (max-width: 860px) {
+
     /* the panel can't hang off a button in the middle of a wrapped top bar */
-    .notifications { position: static; }
-    .notifications-panel { position: fixed; left: 12px; right: 12px; top: 70px; width: auto; }
-    dialog#studentDetailDialog { padding: 20px; }
+    .notifications {
+        position: static;
+    }
+
+    .notifications-panel {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        top: 70px;
+        width: auto;
+    }
+
+    dialog#studentDetailDialog {
+        padding: 20px;
+    }
 }
 
 
@@ -1060,34 +1806,72 @@ dialog#studentDetailDialog::backdrop { background: rgba(6, 26, 74, 0.45); }
 
 /* Dialogs: the global "* { margin: 0 }" reset removed the browser's automatic
    centring, which left every dialog stuck in the top corner */
-dialog { margin: auto; }
+dialog {
+    margin: auto;
+}
 
 /* ---------- Tables: headers centred over their content, equal columns ---------- */
-table { table-layout: fixed; min-width: 640px; }
-th, td {
+table {
+    table-layout: fixed;
+    min-width: 640px;
+}
+
+th,
+td {
     text-align: center;
     vertical-align: middle;
     white-space: normal;
-    overflow-wrap: break-word; /* only breaks a word that cannot fit at all */
+    overflow-wrap: break-word;
+    /* only breaks a word that cannot fit at all */
     padding: 12px 8px;
 }
-th { letter-spacing: 0.04em; }
+
+th {
+    letter-spacing: 0.04em;
+}
+
 /* Dense tables (9-11 columns) size their columns to the content, so words and
    dates stay readable; headers are still centred over their cells */
-.report-table.wide { table-layout: auto; min-width: 960px; }
-.sessions-table td { vertical-align: middle; }
+.report-table.wide {
+    table-layout: auto;
+    min-width: 960px;
+}
+
+.sessions-table td {
+    vertical-align: middle;
+}
+
 /* buttons in the last column: equal margins all round, so a centred pair is
    truly centred (the old rule only put space on their right) */
-.sessions-table td:last-child button { margin: 3px; }
+.sessions-table td:last-child button {
+    margin: 3px;
+}
 
 /* a badge on its own (the Status column) is centred; only one that follows
    text (a "Today" / "Replacement" tag) gets a gap */
-.sessions-table td .badge { margin-left: 0; }
-.sessions-table td > span > .badge { margin-left: 8px; }
-td button, td button + button { margin: 2px 3px; }
-td select { width: 100%; min-width: 0; max-width: 210px; }
+.sessions-table td .badge {
+    margin-left: 0;
+}
+
+.sessions-table td>span>.badge {
+    margin-left: 8px;
+}
+
+td button,
+td button+button {
+    margin: 2px 3px;
+}
+
+td select {
+    width: 100%;
+    min-width: 0;
+    max-width: 210px;
+}
+
 /* tables inside dialogs size their columns to the content instead */
-.roster-scroll table { table-layout: auto; }
+.roster-scroll table {
+    table-layout: auto;
+}
 
 /* ---------- Attendance summary: say that names are clickable ---------- */
 .summary-hint {
@@ -1102,23 +1886,51 @@ td select { width: 100%; min-width: 0; max-width: 210px; }
     border: 1px solid #cfe0fa;
     border-radius: var(--r-md);
 }
-.summary-hint svg { flex: none; }
-#sumBody .link-button::after, #isumBody .link-button::after {
+
+.summary-hint svg {
+    flex: none;
+}
+
+#sumBody .link-button::after,
+#isumBody .link-button::after {
     content: "\203A";
     display: inline-block;
     margin-left: 6px;
     font-weight: 800;
     transition: transform 0.15s;
 }
-#sumBody .link-button:hover::after, #isumBody .link-button:hover::after { transform: translateX(3px); }
 
-.dialog-filter { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-.dialog-filter label { margin: 0; font-weight: 600; }
-.dialog-filter select { width: auto; min-width: 210px; }
+#sumBody .link-button:hover::after,
+#isumBody .link-button:hover::after {
+    transform: translateX(3px);
+}
+
+.dialog-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.dialog-filter label {
+    margin: 0;
+    font-weight: 600;
+}
+
+.dialog-filter select {
+    width: auto;
+    min-width: 210px;
+}
 
 /* ---------- Password fields: show / hide ---------- */
-.password-field { position: relative; }
-.password-field input { padding-right: 46px; }
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 46px;
+}
+
 .password-toggle {
     position: absolute;
     top: 50%;
@@ -1136,17 +1948,26 @@ td select { width: 100%; min-width: 0; max-width: 210px; }
     border: 0;
     border-radius: var(--r-sm);
 }
-.password-toggle:hover { color: var(--logo-blue); background: #eaf1fc; }
-.password-toggle:active { transform: translateY(-50%); }
 
-/* ---------- Top bar: sound toggle ---------- */
-.sound-off-line { display: none; }
-.is-muted .sound-waves { display: none; }
-.is-muted .sound-off-line { display: inline; }
+.password-toggle:hover {
+    color: var(--logo-blue);
+    background: #eaf1fc;
+}
+
+.password-toggle:active {
+    transform: translateY(-50%);
+}
+
 
 /* ---------- Create / edit timetable: open state is just an x ---------- */
-#createTimetableButton[aria-expanded="true"] .btn-label { display: none; }
-#createTimetableButton[aria-expanded="true"] { padding: 8px 12px; }
+#createTimetableButton[aria-expanded="true"] .btn-label {
+    display: none;
+}
+
+#createTimetableButton[aria-expanded="true"] {
+    padding: 8px 12px;
+}
+
 #createTimetableButton[aria-expanded="true"] .close-x {
     display: inline-flex;
     margin: 0;
@@ -1159,10 +1980,79 @@ td select { width: 100%; min-width: 0; max-width: 210px; }
 
 /* ---------- Small screens: dialog tables must fit without sideways scrolling ---------- */
 @media (max-width: 860px) {
+
     dialog#studentDetailDialog .roster-scroll table,
-    dialog#rosterDialog .roster-scroll table { min-width: 0; font-size: 0.8rem; }
-    .roster-scroll th, .roster-scroll td { padding: 8px 5px; }
-    .roster-scroll th { font-size: 0.64rem; letter-spacing: 0.02em; }
-    dialog#studentDetailDialog .roster-scroll td:first-child { font-weight: 600; }
-    .dialog-filter select { min-width: 0; flex: 1; }
+    dialog#rosterDialog .roster-scroll table {
+        min-width: 0;
+        font-size: 0.8rem;
+    }
+
+    .roster-scroll th,
+    .roster-scroll td {
+        padding: 8px 5px;
+    }
+
+    .roster-scroll th {
+        font-size: 0.64rem;
+        letter-spacing: 0.02em;
+    }
+
+    dialog#studentDetailDialog .roster-scroll td:first-child {
+        font-weight: 600;
+    }
+
+    .dialog-filter select {
+        min-width: 0;
+        flex: 1;
+    }
+}
+
+
+/* ======================= Phase 9 ======================= */
+/* Small dialogs: edit a user, set a password, rename a class */
+dialog.form-dialog {
+    width: min(440px, calc(100vw - 32px));
+    padding: 28px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 5px solid var(--logo-blue);
+    border-radius: var(--r-md);
+    box-shadow: 0 24px 60px rgba(6, 26, 74, 0.3);
+}
+
+dialog.form-dialog::backdrop {
+    background: rgba(6, 26, 74, 0.45);
+}
+
+.form-dialog h3 {
+    margin-bottom: 14px;
+}
+
+.form-dialog p.error {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+.form-dialog p.error:empty {
+    display: none;
+}
+
+.form-dialog .btn-outline {
+    margin-bottom: 14px;
+}
+
+.users-toolbar-note {
+    margin: -6px 0 14px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 860px) {
+    dialog.form-dialog {
+        padding: 20px;
+    }
 }

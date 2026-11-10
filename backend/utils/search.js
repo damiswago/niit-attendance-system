@@ -10,3 +10,10 @@ export const sameTextIgnoringCase = (text) => ({
   $regex: `^${escapeRegex(String(text).trim())}$`,
   $options: "i",
 });
+
+// For search boxes: matches anywhere in the value, ignoring case. "ada" finds
+// "Ada Obi" and "madalyn@x.com". Characters are literal, as above.
+export const containsIgnoringCase = (text) => ({
+  $regex: escapeRegex(String(text).trim()),
+  $options: "i",
+});

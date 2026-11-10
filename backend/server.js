@@ -4,7 +4,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser"
 import sessionJob from "./jobs/sessionJob.js";
 import "./jobs/attendanceJob.js";
-import mongoose from "mongoose";
 
 import connectDB from "./config/db.js";
 

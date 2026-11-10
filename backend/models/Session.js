@@ -96,5 +96,19 @@ const sessionSchema = new mongoose.Schema({
     timestamps: true
 });
 
+// A timetable can have only ONE regular session on a given day. Without this,
+// two things creating "today's session" at the same moment (the daily job
+// running twice, two servers, or an admin postponing a day just as the job
+// creates it) could leave two copies, and students could check in to either.
+// Replacement sessions are exempt: several can legitimately share a day.
+sessionSchema.index(
+    { timetable: 1, date: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { isReplacement: false },
+        name: "one_regular_session_per_timetable_day"
+    }
+);
+
 const Session = mongoose.model("Session", sessionSchema);
 export default Session;
